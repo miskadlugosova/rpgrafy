@@ -2,7 +2,6 @@
 #include <fstream>
 #include <vector>
 #include <set>
-#include <unistd.h>
 
 using namespace std;
 
@@ -160,11 +159,14 @@ void alg(int vertex, int edge) {
 int main() {
     int numofver;
     long int l;
-    string s;
-    pair<int, int> p;
+    string s, vstup, vystup;
     ifstream myfile;
-    result.open("20g3eres");
-    myfile.open("/home/jerry/CLionProjects/rpgrafy/20g3e.txt");
+    cout << "Zadaj cestu k vstupnemu suboru:" << endl;
+    cin >> vstup;
+    cout << "Zadaj nazov vystupneho suboru" << endl;
+    cin >> vystup;
+    result.open(vystup);
+    myfile.open(vstup);
     myfile >> numofver;
     if (numofver * 3 / 2 % 2 == 1) result << "graf by neobsahoval parny pocet hran" << endl;
 
@@ -177,7 +179,7 @@ int main() {
             existsopt = false;
 
             myfile >> s >> l >> s;
-            cout << "Graph " << l << endl;
+            //cout << "Graph " << l << endl;
             for (int i = 0; i < numofver; i++) {      // nacita vstup
                 red.push_back(0);                    //najdlhsia cesta moze byt dlzky numofver-1
                 blue.push_back(0);
@@ -245,7 +247,7 @@ int main() {
         else result << "Some of the graphs were incorrect" << endl;
     }
 
-    cout << "skoncil som" << endl;
+    //cout << "skoncil som" << endl;
     myfile.close();
     result.close();
     return 0;
