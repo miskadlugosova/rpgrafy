@@ -53,11 +53,10 @@ void evaluate() {
 
     if (correct) {
 
-
         sety.insert(red);
 
-        bool tmp = true;                         //ci kazdy graf ma mnozinu cuest kde najdlhsia je dlzky max 5
-         for (int i = 6; i < red.size(); i++) {
+        bool tmp = true;                         //ci kazdy graf ma mnozinu cuest kde najdlhsia je dlzky max 4
+         for (int i = 5; i < red.size(); i++) {
              if (red[i] != 0) tmp = false;
          }
          if (tmp) existsopt = true;
@@ -167,19 +166,20 @@ int main() {
     cin >> vystup;
     result.open(vystup);
     myfile.open(vstup);
-    myfile >> numofver;
+    //cout << "Zadaj pocet vrcholov kazdeho grafu" << endl;
+    myfile >> numofver;                                       // !!! pri menej ako 20-vrcholovych iny format vstupu
     if (numofver * 3 / 2 % 2 == 1) result << "graf by neobsahoval parny pocet hran" << endl;
 
     else {
-        //int order = 0;
+        //int order = 0;                          // !!! pri menej ako 20-vrcholovych iny format vstupu
         while (!myfile.eof()) {
             int a;
-            //cout << "I am processing graph number " << order << endl;
-            //order++;
+            //order++;                            // !!! pri menej ako 20-vrcholovych iny format vstupu
             existsopt = false;
 
-            myfile >> s >> l >> s;
-            //cout << "Graph " << l << endl;
+            myfile >> s >> l >> s;                // !!! pri menej ako 20-vrcholovych iny format vstupu
+            cout << "Graph " << l << endl;        // aby sme videli progress programu
+
             for (int i = 0; i < numofver; i++) {      // nacita vstup
                 red.push_back(0);                    //najdlhsia cesta moze byt dlzky numofver-1
                 blue.push_back(0);
@@ -188,7 +188,7 @@ int main() {
                 for (int j = 0; j < 3; j++) {        // tri susedne vrcholy pre kazdy vektor
                     myfile >> a;
                     pair<int, int> p;
-                    p.first = a - 1;                   //v 20-vrcholovych su cislovane od 1 nie od 0
+                    p.first = a-1;                   // !!! v 20-vrcholovych su cislovane od 1 nie od 0, teda a-1 (pri mensich grafoch a)
                     p.second = -1;
                     tmp.push_back(p);
                 }
@@ -198,8 +198,10 @@ int main() {
             if (myfile.eof()) continue;             //po precitani posledneho grafu neregistruje eof ale nacitava posledne cislo znovu niekolkokrat
             alg(0, 0);                 //spusti vypocet na danom grafe
 
+
+            //zapisem rozne moznosti ciest do result
             /*result << "Graph " << l << endl;
-            for (vector<int> v : sety) {                        //zapisem rozne moznosti ciest do result
+            for (vector<int> v : sety) {
                 for (int i = 0; i < v.size(); i++) {
                     if (i != 0) result << " " << v[i] / 2;
                     else result << v[i] / 2;
@@ -209,9 +211,15 @@ int main() {
             }*/
 
 
-            if (!existsopt) {            // pre pocet vrcholov 16 ci existuje mnozina ciest kde najdlhsia je max dlzky 5
+            if (!existsopt) {            // pre pocet vrcholov x ak neexistuje mnozina ciest kde najdlhsia je max dlzky 4
                 correctfile = false;
                 result << "I am processing graph number " << l << endl;
+                for (vector <pair <int, int>> v : graph){
+                    for (pair <int, int> i : v)
+                        result << i.first+1;                   // !!! od 20-vrcholovych su cislovane od 1, nie od 0, preto i.first+1 (pri mensich grafoch i.first)
+                    result << endl;
+                }
+                result << "Found options" << sety.size()<< endl;
                 for (vector<int> v : sety) {                        //zapisem rozne moznosti ciest do result
                     for (int i = 0; i < v.size(); i++) {
                         if (i != 0) result << " " << v[i] / 2;
@@ -222,7 +230,7 @@ int main() {
                 }
             }
 
-
+            // zmazeme vsetky udaje, aby sme pri dalsom grafe zacinali odznova
             for (int i = 0; i < graph.size(); i++) {
                 graph[i].clear();
             }
@@ -231,23 +239,13 @@ int main() {
             blue.clear();
             sety.clear();
 
-
-
-            /* for (vector<int> v : sety) {                        //zapisem rozne moznosti ciest do result
-                 for (int i = 0; i < v.size(); i++) {
-                     if (i != 0) result << " " << v[i] / 2;
-                     else result << v[i] / 2;
-                 }
-                 result << endl;
-                 result << endl;
-             }*/
         }
 
+        // informacia o tom, ze program skoncil a grafy splnali nase zadanie alebo nie (a bude obsahovat aj dany graf a moznosti ofarbenia)
         if (correctfile) result << "Graphs were correct" << endl;
         else result << "Some of the graphs were incorrect" << endl;
     }
 
-    //cout << "skoncil som" << endl;
     myfile.close();
     result.close();
     return 0;
