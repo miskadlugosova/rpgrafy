@@ -59,7 +59,20 @@ void evaluate() {
          for (int i = 5; i < red.size(); i++) {
              if (red[i] != 0) tmp = false;
          }
-         if (tmp) existsopt = true;
+         if (tmp) {
+             cout << "possible"<< endl;
+             for (auto e : red) cout << e/2 << " ";
+             cout << endl;
+             existsopt = true;
+
+             for (auto a : graph) {
+                 for (auto b : a) {
+                     cout << b.second << " ";
+                 }
+                 cout << endl;
+             }
+         }
+
 
     }
 
@@ -95,7 +108,7 @@ bool existspath(int from, int vertex1, int vertex2, int colour) {
 void alg(int vertex, int edge) {
 
 
-    if (!existsopt) {
+    //if (!existsopt) {
 
         if (graph[vertex][edge].second != -1) {
             if (edge < 2) {
@@ -150,7 +163,7 @@ void alg(int vertex, int edge) {
                     graph[graph[vertex][edge].first][i].second = -1;
             }
         }
-    }
+   // }
 
 }
 
@@ -188,7 +201,7 @@ int main() {
                 for (int j = 0; j < 3; j++) {        // tri susedne vrcholy pre kazdy vektor
                     myfile >> a;
                     pair<int, int> p;
-                    p.first = a-1;                   // !!! v 20-vrcholovych su cislovane od 1 nie od 0, teda a-1 (pri mensich grafoch a)
+                    p.first = a;                   // !!! v 20-vrcholovych su cislovane od 1 nie od 0, teda a-1 (pri mensich grafoch a)
                     p.second = -1;
                     tmp.push_back(p);
                 }
@@ -216,7 +229,7 @@ int main() {
                 result << "I am processing graph number " << l << endl;
                 for (vector <pair <int, int>> v : graph){
                     for (pair <int, int> i : v)
-                        result << i.first+1;                   // !!! od 20-vrcholovych su cislovane od 1, nie od 0, preto i.first+1 (pri mensich grafoch i.first)
+                        result << i.first;                   // !!! od 20-vrcholovych su cislovane od 1, nie od 0, preto i.first+1 (pri mensich grafoch i.first)
                     result << endl;
                 }
                 result << "Found options" << sety.size()<< endl;
@@ -226,6 +239,16 @@ int main() {
                         else result << v[i] / 2;
                     }
                     result << endl;
+                    result << endl;
+                }
+            }
+
+            else {
+                result << "options" << endl;
+                for (auto v : sety) {
+                    for (auto e : v) {
+                        result << e/2 << " ";
+                    }
                     result << endl;
                 }
             }
